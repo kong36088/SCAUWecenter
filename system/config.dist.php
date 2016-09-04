@@ -16,11 +16,11 @@
 define('G_COOKIE_DOMAIN','');
 
 // 定义 Cookies 前缀
-define('G_COOKIE_PREFIX','{G_COOKIE_PREFIX}');
+define('G_COOKIE_PREFIX','zio_');
 
 // 定义应用加密 KEY
-define('G_SECUKEY','{G_SECUKEY}');
-define('G_COOKIE_HASH_KEY', '{G_COOKIE_HASH_KEY}');
+define('G_SECUKEY','ejpxlibekdal');
+define('G_COOKIE_HASH_KEY', 'tbllkunyrasrkop');
 
 define('G_INDEX_SCRIPT', '?/');
 
@@ -34,3 +34,12 @@ define('G_SESSION_SAVE', 'db');
 
 // Session 文件存储路径
 define('G_SESSION_SAVE_PATH', '');
+
+//GOGS域名
+define('G_GOGS_URL' , 'http://192.168.102.139:3001');
+
+//CURL GOGS域名
+define('G_GOGS_CURL_URL', 'http://gogs:3000');
+
+//GOGS COOKIE路径
+define('G_GOGS_COOKIE_DIR', dirname(__FILE__) . '/../cache/cookie/');

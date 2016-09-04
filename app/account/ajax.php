@@ -301,6 +301,9 @@ class ajax extends AWS_CONTROLLER
 			}
 			else
 			{
+				// TODO 模拟登陆GOGS
+				curl_login_gogs($_POST['user_name'], $_POST['password']);
+
 				if ($_POST['net_auto_login'])
 				{
 					$expire = 60 * 60 * 24 * 360;
@@ -1118,7 +1121,7 @@ class ajax extends AWS_CONTROLLER
 
 		if ($this->model('account')->update_user_password($_POST['old_password'], $_POST['password'], $this->user_id, $this->user_info['salt']))
 		{
-			H::ajax_json_output(AWS_APP::RSM(null, 1, AWS_APP::lang()->_t('密码修改成功, 请牢记新密码')));
+			H::ajax_json_output(AWS_APP::RSM(null, -1, AWS_APP::lang()->_t('密码修改成功, 请牢记新密码')));
 		}
 		else
 		{

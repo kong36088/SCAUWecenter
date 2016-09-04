@@ -337,6 +337,36 @@ switch ($_POST['step'])
 			'integral' => 2000
 		);
 
+		$gogs_data = array(
+			'lower_name' => strtolower($_POST['user_name']),
+			'name' => $_POST['user_name'],
+			'passwd' => compile_password($_POST['password'], $salt),
+			'salt' => $salt,
+			'rands' => fetch_salt(6),
+			'email' => $_POST['email'],
+			'login_type' => 0,
+			'login_name' => '',
+			'type' => 0,
+			'location' => '',
+			'website' => '',
+			'last_repo_visibility' => '0',
+			'is_admin' => 1,
+			'allow_git_hook' => 0,
+			'allow_import_local' => 0,
+			'prohibit_login' => 0,
+			'use_custom_avatar' =>0,
+			'num_followers' => 0,
+			'num_stars' => 0,
+			'num_repos' => 0,
+			'description' => '',
+			'num_teams' => 0,
+			'num_members' => 0,
+			'created_unix' => time(),
+			'updated_unix' => time(),
+			'is_active' => 1,
+			'avatar_email' => htmlspecialchars($email),
+		);
+
 		$db->insert($db_prefix . 'users', $data);
 		$db->insert($db_prefix . 'users_attrib', array('uid' => 1, 'signature' => ''));
 

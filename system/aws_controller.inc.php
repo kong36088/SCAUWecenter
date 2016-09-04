@@ -31,6 +31,9 @@ class AWS_CONTROLLER
 		// 获取当前用户 User ID
 		$this->user_id = AWS_APP::user()->get_info('uid');
 
+		//加入gogs路径地址
+		TPL::assign('gogs_url', G_GOGS_URL);
+
 		if ($this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE))
 		{
 			$user_group = $this->model('account')->get_user_group($this->user_info['group_id'], $this->user_info['reputation_group']);

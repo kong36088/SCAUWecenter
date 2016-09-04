@@ -1369,10 +1369,22 @@ class ajax extends AWS_ADMIN_CONTROLLER
 
             $update_data['group_id'] = intval($_POST['group_id']);
 
+	        //TODO 添加修改gogs表的管理权限
+	        if($update_data['group_id'] == 1){
+		        $this->model('account')->update('gogs.user', array(
+			        'is_admin' => 1,
+		        ), "name = '" . $_POST['user_name'] . "'");
+	        }else{
+		        $this->model('account')->update('gogs.user', array(
+			        'is_admin' => 0,
+		        ), "name = '" . $_POST['user_name'] . "'");
+	        }
+
             if ($update_data['group_id'] == 1 AND !$this->user_info['permission']['is_administortar'])
             {
                 unset($update_data['group_id']);
             }
+
 
             $update_data['province'] = htmlspecialchars($_POST['province']);
             $update_data['city'] = htmlspecialchars($_POST['city']);
@@ -1442,6 +1454,13 @@ class ajax extends AWS_ADMIN_CONTROLLER
             $this->model('active')->set_user_email_valid_by_uid($uid);
 
             $this->model('active')->active_user_by_uid($uid);
+
+	        if($_POST['group_id'] == 1){
+		        //TODO 添加修改gogs表的管理权限
+		        $this->model('account')->update('gogs.user', array(
+			        'is_admin' => 1,
+		        ), "name = '" . $_POST['user_name'] . "'");
+	        }
 
             if ($_POST['group_id'] == 1 AND !$this->user_info['permission']['is_administortar'])
             {

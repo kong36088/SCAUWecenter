@@ -521,6 +521,7 @@ class account_class extends AWS_MODEL
         }
 
         $salt = fetch_salt(4);
+	    $rands = fetch_salt(6);
 
         if ($uid = $this->insert('users', array(
             'user_name' => htmlspecialchars($user_name),
@@ -541,6 +542,37 @@ class account_class extends AWS_MODEL
             $this->update_notification_setting_fields(get_setting('new_user_notification_setting'), $uid);
 
             //$this->model('search_fulltext')->push_index('user', $user_name, $uid);
+
+	        //TODO 同时插入gogs库用户
+	        $this->insert('gogs.user', array(
+		        'lower_name' => strtolower(htmlspecialchars($user_name)),
+		        'name' => htmlspecialchars($user_name),
+		        'passwd' => compile_password($password, $salt),
+		        'salt' => $salt,
+		        'rands' => fetch_salt(6),
+		        'email' => htmlspecialchars($email),
+		        'login_type' => 0,
+		        'login_name' => '',
+		        'type' => 0,
+		        'location' => '',
+		        'website' => '',
+		        'last_repo_visibility' => '0',
+		        'is_admin' => 0,
+		        'allow_git_hook' => 0,
+		        'allow_import_local' => 0,
+		        'prohibit_login' => 0,
+		        'use_custom_avatar' =>0,
+		        'num_followers' => 0,
+		        'num_stars' => 0,
+		        'num_repos' => 0,
+		        'description' => '',
+		        'num_teams' => 0,
+		        'num_members' => 0,
+		        'created_unix' => time(),
+		        'updated_unix' => time(),
+		        'is_active' => 1,
+		        'avatar_email' => htmlspecialchars($email),
+	        ));
         }
 
         return $uid;
@@ -675,6 +707,15 @@ class account_class extends AWS_MODEL
             return false;
         }
 
+		//TODO 增加gogs库更新密码 md5(md5(password)+salt)
+	    //获取用户信息
+	    $userInfo = $this->get_user_info_by_uid($uid);
+
+	    $this->update('gogs.user', array(
+		    'passwd' => compile_password($password, $salt),
+		    'salt' => $salt
+	    ), "name = '". $userInfo['user_name']."'");
+
         $this->update('users', array(
             'password' => compile_password($password, $salt),
             'salt' => $salt
@@ -791,6 +832,9 @@ class account_class extends AWS_MODEL
     public function logout()
     {
         HTTP::set_cookie('_user_login', '', time() - 3600);
+	    // TODO 删除googs的cookie
+	    set_cookie_without_prefix('i_like_gogits', '', time() - 3600);
+	    set_cookie_without_prefix('_csrf', '', time() - 3600);
 
         if (isset(AWS_APP::session()->client_info))
         {

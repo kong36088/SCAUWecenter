@@ -87,12 +87,34 @@ class main extends AWS_CONTROLLER
 	public function login_action()
 	{
 		$url = base64_decode($_GET['url']);
+		$git_redirect_to = $_GET['git_redirect_to'];
 
 		if ($this->user_id)
 		{
 			if ($url)
 			{
 				header('Location: ' . $url);
+			}
+			else if($git_redirect_to){
+				// TODO 模拟登陆
+				if($_COOKIE[G_COOKIE_PREFIX . '_user_login'] && !$_COOKIE['i_like_gogits']){
+					$auth_hash_key = md5(G_COOKIE_HASH_KEY . $_SERVER['HTTP_USER_AGENT']);
+
+					// 解码 Cookie
+					$sso_user_login = json_decode(AWS_APP::crypt()->decode($_COOKIE[G_COOKIE_PREFIX . '_user_login'], $auth_hash_key), true);
+
+					if ($sso_user_login['user_name'] AND $sso_user_login['password'] AND $sso_user_login['uid'])
+					{
+						if ($user_info = AWS_APP::model('account')->check_hash_login($sso_user_login['user_name'], $sso_user_login['password']))
+						{
+							if(!curl_login_gogs($sso_user_login['user_name'], $user_info['password'])){
+								header('Location:' . G_GOGS_URL . '/user/login');
+							}
+						}
+					}
+				}
+
+				header('Location:' . $git_redirect_to);
 			}
 			else
 			{

@@ -694,6 +694,7 @@ function is_really_writable($file)
  */
 function fetch_salt($length = 4)
 {
+	$salt = '';
 	for ($i = 0; $i < $length; $i++)
 	{
 		$salt .= chr(rand(97, 122));
@@ -1331,4 +1332,73 @@ function get_paid_progress_bar($amount, $paid)
 function uniqid_generate($length = 16)
 {
 	return substr(strtolower(md5(uniqid(rand()))), 0, $length);
+}
+
+/**
+ * CURL模拟登陆GOGS
+ * @param $user_name string 用户名
+ * @param $password string 密码
+ * @return boolean 登陆是否成功
+ */
+function curl_login_gogs($user_name,$password){
+	// TODO 如果没有开启cookie则直接让用户登陆gogs
+
+	$gogs_cookie = G_GOGS_COOKIE_DIR . strtotime('now') . rand(1,100000) . chr(rand(65,90));
+	$url=G_GOGS_CURL_URL;
+	//获取csrf session等cookie
+	$curl = curl_init();//初始化curl模块
+	curl_setopt($curl, CURLOPT_URL,$url);//登录提交的地址
+	curl_setopt($curl, CURLOPT_HEADER, 1);//是否显示头信息
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//是否自动显示返回的信息
+	curl_setopt($curl, CURLOPT_COOKIEJAR, $gogs_cookie); //设置Cookie信息保存在指定的文件中
+	curl_exec($curl);//执行cURL
+	curl_close($curl);//关闭cURL资源，并且释放系统资源
+
+	//模拟登陆
+	$curl = curl_init();
+	$post = array('user_name'=>$user_name,'password'=>$password);
+	curl_setopt($curl, CURLOPT_URL,$url . '/user/login');//登录提交的地址
+	curl_setopt($curl, CURLOPT_HEADER, 1);//是否显示头信息
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//是否自动显示返回的信息
+	curl_setopt($curl, CURLOPT_COOKIEFILE, $gogs_cookie); //设置Cookie信息保存在指定的文件中
+	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($post));
+	$response = curl_exec($curl);
+	curl_close($curl);
+	preg_match('/HTTP\/[^\s]*\s([^\s]*)/',$response,$match);
+
+	$cookie = parse_cookie_file($gogs_cookie);
+	unlink($gogs_cookie);
+	//$match[1] HTTP状态码，200表示登陆失败，302则登陆成功
+	if($match[1] != "302"){
+		return false;
+	}
+
+	$set_cookie_status = (set_cookie_without_prefix('i_like_gogits',$cookie['i_like_gogits'])&&set_cookie_without_prefix('_csrf',$cookie['_csrf']));
+	if(!$set_cookie_status){
+		return false;
+	}
+	return true;
+}
+
+/**
+ * 解析cookie文件
+ * @param $file string cookie文件路径
+ */
+function parse_cookie_file($file){
+	$cookie_folder = $file;
+	$lines = file($file);
+	$result = array();
+	foreach($lines as $line) {
+		if($line[0] == '#' && substr_count($line, "\t") == 6) {
+			$tokens = explode("\t", $line);
+			$tokens = array_map('trim', $tokens);
+			$result[$tokens[5]] = $tokens[6];
+		}
+	}
+	return $result;
+}
+
+function set_cookie_without_prefix($name, $value = '', $expire = null, $path = '/', $domain = null, $secure = false, $httponly = true)
+{
+	return setcookie($name, $value, $expire, $path, $domain, $secure, $httponly);
 }
