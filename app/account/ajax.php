@@ -301,9 +301,6 @@ class ajax extends AWS_CONTROLLER
 			}
 			else
 			{
-				// TODO 模拟登陆GOGS
-				curl_login_gogs($_POST['user_name'], $_POST['password']);
-
 				if ($_POST['net_auto_login'])
 				{
 					$expire = 60 * 60 * 24 * 360;
@@ -341,6 +338,9 @@ class ajax extends AWS_CONTROLLER
 
 					$url = ($url) ? $sync_url . 'url-' . base64_encode($url) : $sync_url;
 				}
+
+				// TODO 模拟登陆GOGS
+				curl_login_gogs($_POST['user_name'], $_POST['password']);
 			}
 
 			H::ajax_json_output(AWS_APP::RSM(array(

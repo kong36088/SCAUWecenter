@@ -1367,12 +1367,11 @@ function curl_login_gogs($user_name,$password){
 	preg_match('/HTTP\/[^\s]*\s([^\s]*)/',$response,$match);
 
 	$cookie = parse_cookie_file($gogs_cookie);
-	unlink($gogs_cookie);
 	//$match[1] HTTP状态码，200表示登陆失败，302则登陆成功
 	if($match[1] != "302"){
 		return false;
 	}
-
+	unlink($gogs_cookie);
 	$set_cookie_status = (set_cookie_without_prefix('i_like_gogits',$cookie['i_like_gogits'],null,G_GOGS_COOKIE_SUBURL,G_GOGS_DOMAIN)&&set_cookie_without_prefix('_csrf',$cookie['_csrf'],null,G_GOGS_COOKIE_SUBURL,G_GOGS_DOMAIN));
 	if(!$set_cookie_status){
 		return false;
