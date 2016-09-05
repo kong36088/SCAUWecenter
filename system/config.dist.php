@@ -36,10 +36,10 @@ define('G_SESSION_SAVE', 'db');
 define('G_SESSION_SAVE_PATH', '');
 
 //GOGS域名
-define('G_GOGS_URL' , 'http://192.168.102.139:3001');
+define('G_GOGS_URL' , 'http://git.jwlchina.cn/');
 
 //CURL GOGS域名
-define('G_GOGS_CURL_URL', 'http://gogs:3000');
+define('G_GOGS_CURL_URL', 'http://git.jwlchina.cn/');
 
 //GOGS COOKIE路径
 define('G_GOGS_COOKIE_DIR', dirname(__FILE__) . '/../cache/cookie/');
