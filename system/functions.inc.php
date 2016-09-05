@@ -1373,7 +1373,7 @@ function curl_login_gogs($user_name,$password){
 		return false;
 	}
 
-	$set_cookie_status = (set_cookie_without_prefix('i_like_gogits',$cookie['i_like_gogits'],null,'/',G_GOGS_URL)&&set_cookie_without_prefix('_csrf',$cookie['_csrf'],null,'/',G_GOGS_URL));
+	$set_cookie_status = (set_cookie_without_prefix('i_like_gogits',$cookie['i_like_gogits'],null,'/',G_GOGS_DOMAIN)&&set_cookie_without_prefix('_csrf',$cookie['_csrf'],null,'/',G_GOGS_DOMAIN));
 	if(!$set_cookie_status){
 		return false;
 	}

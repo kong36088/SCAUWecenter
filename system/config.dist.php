@@ -13,7 +13,7 @@
 */
 
 // 定义 Cookies 作用域
-define('G_COOKIE_DOMAIN','');
+define('G_COOKIE_DOMAIN','192.168.102.139');
 
 // 定义 Cookies 前缀
 define('G_COOKIE_PREFIX','zio_');
@@ -43,3 +43,6 @@ define('G_GOGS_CURL_URL', 'http://git.jwlchina.cn/');
 
 //GOGS COOKIE路径
 define('G_GOGS_COOKIE_DIR', dirname(__FILE__) . '/../cache/cookie/');
+
+//顶级域名
+define('G_GOGS_DOMAIN','192.168.102.139');

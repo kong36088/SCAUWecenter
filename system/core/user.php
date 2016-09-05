@@ -41,6 +41,7 @@ class core_user
 					// TODO 自动登陆，模拟登陆
 					if(!curl_login_gogs($sso_user_login['user_name'], $user_info['password'])){
 						HTTP::redirect(G_GOGS_URL . '/user/login');
+						return false;
 					}
 
 					return true;
