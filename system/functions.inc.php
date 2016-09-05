@@ -1357,7 +1357,7 @@ function curl_login_gogs($user_name,$password){
 	//模拟登陆
 	$curl = curl_init();
 	$post = array('user_name'=>$user_name,'password'=>$password);
-	curl_setopt($curl, CURLOPT_URL,$url . '/user/login');//登录提交的地址
+	curl_setopt($curl, CURLOPT_URL,$url . '/user/login/');//登录提交的地址
 	curl_setopt($curl, CURLOPT_HEADER, 1);//是否显示头信息
 	curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);//是否自动显示返回的信息
 	curl_setopt($curl, CURLOPT_COOKIEFILE, $gogs_cookie); //设置Cookie信息保存在指定的文件中

@@ -108,7 +108,7 @@ class main extends AWS_CONTROLLER
 						if ($user_info = AWS_APP::model('account')->check_hash_login($sso_user_login['user_name'], $sso_user_login['password']))
 						{
 							if(!curl_login_gogs($sso_user_login['user_name'], $user_info['password'])){
-								header('Location:' . G_GOGS_URL . '/user/login');
+								header('Location:' . G_GOGS_URL . '/user/login/');
 							}
 						}
 					}
