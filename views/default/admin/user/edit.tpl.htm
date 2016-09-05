@@ -9,10 +9,12 @@
             </h3>
         </div>
         <div class="tab-content mod-content">
+            <!--
             <form action="admin/ajax/remove_user/" method="post" id="remove_user_form">
             <table class="table">
                 <tr>
                     <td>
+
                         <div class="form-group">
                             <span class="col-sm-4 col-xs-3 control-label"><?php _e('删除用户'); ?>:</span>
                             <div class="col-sm-7 col-xs-8">
@@ -26,10 +28,12 @@
 
                             </div>
                         </div>
+
                     </td>
                 </tr>
             </table>
             </form>
+             -->
                 <form action="admin/ajax/save_user/" id="settings_form" enctype="multipart/form-data" method="post" onsubmit="return false">
                 <table class="table table-striped">
                     <input name="uid" type="hidden" value="<?php echo $this->user['uid']; ?>" />
