@@ -45,4 +45,4 @@ define('G_GOGS_CURL_URL', 'http://192.168.102.139:3001');
 define('G_GOGS_COOKIE_DIR', dirname(__FILE__) . '/../cache/cookie/');
 
 //顶级域名
-define('G_TOP_COOKIE_DOMAIN','192.168.102.139');
+define('G_GOGS_DOMAIN','192.168.102.139');
