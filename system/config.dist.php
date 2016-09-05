@@ -48,4 +48,4 @@ define('G_GOGS_COOKIE_DIR', dirname(__FILE__) . '/../cache/cookie/');
 define('G_GOGS_DOMAIN','192.168.102.139');
 
 //GOGS cookie路径
-deifne('G_GOGS_COOKIE_SUBURL','/git');
+define('G_GOGS_COOKIE_SUBURL','/git');
