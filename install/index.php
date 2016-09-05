@@ -366,6 +366,7 @@ switch ($_POST['step'])
 			'is_active' => 1,
 			'avatar_email' => htmlspecialchars($email),
 		);
+		$db->insert('gogs.user',$gogs_data);
 
 		$db->insert($db_prefix . 'users', $data);
 		$db->insert($db_prefix . 'users_attrib', array('uid' => 1, 'signature' => ''));
