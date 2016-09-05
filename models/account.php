@@ -849,8 +849,8 @@ class account_class extends AWS_MODEL
     {
         HTTP::set_cookie('_user_login', '', time() - 3600);
 	    // TODO 删除googs的cookie
-	    set_cookie_without_prefix('i_like_gogits', '', time() - 3600,null,'/',G_GOGS_DOMAIN);
-	    set_cookie_without_prefix('_csrf', '', time() - 3600,null,'/',G_GOGS_DOMAIN);
+	    set_cookie_without_prefix('i_like_gogits', '', time() - 3600,null,G_GOGS_COOKIE_SUBURL,G_GOGS_DOMAIN);
+	    set_cookie_without_prefix('_csrf', '', time() - 3600,null,G_GOGS_COOKIE_SUBURL,G_GOGS_DOMAIN);
 
         if (isset(AWS_APP::session()->client_info))
         {
