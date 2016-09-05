@@ -32,7 +32,7 @@ class AWS_CONTROLLER
 		$this->user_id = AWS_APP::user()->get_info('uid');
 
 		//加入gogs路径地址
-		TPL::assign('gogs_url', G_GOGS_URL);
+		TPL::assign('gogs_url', G_GOGS_URL . '/');
 
 		if ($this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE))
 		{
