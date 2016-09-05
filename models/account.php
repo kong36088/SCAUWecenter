@@ -636,6 +636,15 @@ class account_class extends AWS_MODEL
      */
     public function update_users_fields($update_data, $uid)
     {
+	    // TODO 更新gogs库email
+	    if($update_data['email']){
+		    $user_info = $this->get_user_info_by_uid($uid);
+		    $this->update('gogs.user',array(
+			    'email' => $update_data['email'],
+			    'avatar_email' => $update_data['email']
+		    ),"name = '" . $user_info['user_name'] . "'");
+	    }
+
         return $this->update('users', $update_data, 'uid = ' . intval($uid));
     }
 
@@ -647,9 +656,16 @@ class account_class extends AWS_MODEL
      */
     public function update_user_name($user_name, $uid)
     {
+	    $user_info = $this->get_user_info_by_uid($uid);
         $this->update('users', array(
             'user_name' => htmlspecialchars($user_name),
         ), 'uid = ' . intval($uid));
+
+	    // TODO 更新gogs库的用户名
+	    $this->update('gogs.user',array(
+		    'name' => htmlspecialchars($user_name),
+		    'lower_name' => strtolower(htmlspecialchars($user_name))
+	    ),"name = '" . $user_info['user_name'] . "'");
 
         //return $this->model('search_fulltext')->push_index('user', $user_name, $uid);
 
