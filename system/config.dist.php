@@ -13,7 +13,7 @@
 */
 
 // 定义 Cookies 作用域
-define('G_COOKIE_DOMAIN','192.168.102.139');
+define('G_COOKIE_DOMAIN','');
 
 // 定义 Cookies 前缀
 define('G_COOKIE_PREFIX','zio_');
@@ -36,16 +36,16 @@ define('G_SESSION_SAVE', 'db');
 define('G_SESSION_SAVE_PATH', '');
 
 //GOGS域名
-define('G_GOGS_URL' , 'http://192.168.102.139:3001');
+define('G_GOGS_URL' , 'http://wecenter.jwlchina.cn');
 
 //CURL GOGS域名
-define('G_GOGS_CURL_URL', 'http://192.168.102.139:3001');
+define('G_GOGS_CURL_URL', 'http://wecenter.jwlchina.cn');
 
 //GOGS COOKIE路径
 define('G_GOGS_COOKIE_DIR', dirname(__FILE__) . '/../cache/cookie/');
 
 //顶级域名
-define('G_GOGS_DOMAIN','192.168.102.139');
+define('G_GOGS_DOMAIN','wecenter.jwlchina.cn');
 
 //GOGS cookie路径
-define('G_GOGS_COOKIE_SUBURL','/git');
+define('G_GOGS_COOKIE_SUBURL','');
