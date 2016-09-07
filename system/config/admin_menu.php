@@ -52,11 +52,11 @@ $config[] = array(
             'url' => 'admin/settings/category-mail'
         ),
 
-        array(
+        /*array(
             'id' => 'SETTINGS_OPENID',
             'title' => AWS_APP::lang()->_t('开放平台'),
             'url' => 'admin/settings/category-openid'
-        ),
+        ),*/
 
         array(
             'id' => 'SETTINGS_CACHE',
@@ -218,7 +218,7 @@ $config[] = array(
         )
     )
 );
-
+/*
 $config[] = array(
     'title' => AWS_APP::lang()->_t('微信微博'),
     'cname' => 'share',
@@ -271,7 +271,7 @@ $config[] = array(
             'url' => 'admin/edm/receiving_list/'
         )
     )
-);
+);*/
 
 $config[] = array(
     'title' => AWS_APP::lang()->_t('邮件群发'),
