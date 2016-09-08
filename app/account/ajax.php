@@ -702,11 +702,27 @@ class ajax extends AWS_CONTROLLER
 			}
 		}
 
+
 		$update_data['avatar_file'] = $this->model('account')->get_avatar($this->user_id, null, 1) . basename($thumb_file['min']);
 
 		// 更新主表
 		$this->model('account')->update_users_fields($update_data, $this->user_id);
 
+		//gogs头像更新
+		$upload_dir = get_setting('upload_dir') . '/avatar/';
+		$gogs_upload_dir = dirname(__FILE__) . '/../../../gogs_avatars/' . (string)($this->gogs_user_info['id']);
+		if(file_exists($upload_dir . $this->model('account')->get_avatar($this->user_id,'real'))){
+			$head_img = $upload_dir .  $this->model('account')->get_avatar($this->user_id,'real');
+		}else{
+			$head_img = $upload_dir .  $this->model('account')->get_avatar($this->user_id,'max');
+		}
+		/*if(file_exists($gogs_upload_dir)&&file_exists($head_img)){
+			unlink($gogs_upload_dir);
+		}*/
+		if(file_exists($head_img)){
+			copy($head_img,$gogs_upload_dir);
+		}
+		//log
 		if (!$this->model('integral')->fetch_log($this->user_id, 'UPLOAD_AVATAR'))
 		{
 			$this->model('integral')->process($this->user_id, 'UPLOAD_AVATAR', round((get_setting('integral_system_config_profile') * 0.2)), '上传头像');

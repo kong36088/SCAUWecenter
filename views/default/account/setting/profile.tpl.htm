@@ -285,7 +285,7 @@
                 <div class="row fileupload-buttonbar" style="padding-left:15px;">
                     <div class="thumbnail">
                         <img id="weixin_show" style="height:300px;margin-top:10px;margin-bottom:8px;"
-                             src="<?php echo get_avatar_url($this->user_id, 'max'); ?>?rand=<?php echo rand(1, 999); ?>" data-holder-rendered="true">
+                             src="<?php if(file_exists(get_avatar_url($this->user_id, 'real'))) echo get_avatar_url($this->user_id, 'real');else echo '/static/common/avatar-max-img.png'; ?>?rand=<?php echo rand(1, 999); ?>" data-holder-rendered="true">
                         <div class="progress progress-striped active" role="progressbar" aria-valuemin="10"
                              aria-valuemax="100" aria-valuenow="0">
                             <div id="weixin_progress" class="progress-bar progress-bar-success" style="width:0%;"></div>
