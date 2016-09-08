@@ -268,6 +268,51 @@
 	</div>
 </div>
 
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    上传头像
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row fileupload-buttonbar" style="padding-left:15px;">
+                    <div class="thumbnail">
+                        <img id="weixin_show" style="height:300px;margin-top:10px;margin-bottom:8px;"
+                             src="<?php echo get_avatar_url($this->user_id, 'max'); ?>?rand=<?php echo rand(1, 999); ?>" data-holder-rendered="true">
+                        <div class="progress progress-striped active" role="progressbar" aria-valuemin="10"
+                             aria-valuemax="100" aria-valuenow="0">
+                            <div id="weixin_progress" class="progress-bar progress-bar-success" style="width:0%;"></div>
+                        </div>
+                        <div class="caption" align="center">
+                            <span id="weixin_upload" class="btn btn-primary fileinput-button">
+                                <span>上传</span>
+                                <input type="file" id="weixin_image" name="aws_upload_file" multiple>
+                            </span>
+                            <!--
+                            <a id="weixin_cancel" href="javascript:void(0)" class="btn btn-warning" role="button"
+                               style="display:none">删除</a>
+                               -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--
+            <div class="modal-footer">
+                <button name="submit" class="btn btn-info">确认</button>
+            </div>
+            -->
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 <script type="text/javascript">
 $(document).ready(function () {
 	$('.select_area').LocationSelect({
@@ -279,7 +324,51 @@ $(document).ready(function () {
 		dataUrl: G_BASE_URL.replace('/?', '') + '/static/js/areas.js'
     });
 
-    var fileUpload = new FileUpload('avatar', $('#avatar_uploader'), $('#avatar_src'), G_BASE_URL + '/account/ajax/avatar_upload/', {'loading_status' : '#avatar_uploading_status'});
+    /*var fileUpload = new FileUpload('avatar', $('#avatar_uploader'), $('#avatar_src'), G_BASE_URL + '/account/ajax/avatar_upload/', {'loading_status' : '#avatar_uploading_status'},function(xhr){
+    	console.log(xhr);
+    });*/
+    //上传头像
+    $("#avatar_uploader").on("click", function () {
+        $("#uploadModal").modal('show');
+    });
+    /*$("#uploadModal").find("button[name='submit']").on("click", function () {
+        var src = $("#weixin_show").attr("src");
+        $("#form-image").attr("src", src);
+        $("#image").val(src);
+        $("#uploadModal").modal("hide");
+    })
+    $("#weixin_cancel").on("click", function () {
+        $("#weixin_image").attr("src", "/uploads/head/head.jpg");
+        $("#weixin_progress").css('width', '0%');
+        $("#weixin_upload").css({display: ""});
+        $("#weixin_cancel").css({display: "none"});
+    });*/
+    $("#weixin_image").fileupload({
+        acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+        maxFileSize: 999000,
+        url: 'account/ajax/avatar_upload/',
+        sequentialUploads: true,
+        previewCrop: true
+    }).on('fileuploadprogress', function (e, data) {
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $("#weixin_progress").css('width', progress + '%');
+        $("#weixin_progress").html(progress + '%');
+    }).on('fileuploaddone', function (e, data) {
+    	var result=eval('['+data.result+']')[0];
+    	if(result.success==true){
+    		$("#wexin_show").attr('src',result.thumb);
+    		$("#avatar_src").attr('src',result.thumb);
+    	}else{
+    		alert(result.error);
+    	}
+        setTimeout(function(){
+            window.location.reload();
+        },500);
+    	$("#uploadModal").modal('hide');
+    }).on('fileuploadfail', function (e, data) {
+        alert('上传失败，请稍后重试');
+        $("#uploadModal").modal('hide');
+    });
 });
 
 <?php if ($this->education_experience_list) { ?>
