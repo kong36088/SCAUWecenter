@@ -45,6 +45,7 @@ function get_avatar_url($uid, $size = 'min')
 	{
 		$all_size[] = $key;
 	}
+	$all_size[]='real';
 
 	$size = in_array($size, $all_size) ? $size : $all_size[0];
 
