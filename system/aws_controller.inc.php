@@ -25,6 +25,7 @@ class AWS_CONTROLLER
 {
 	public $user_id;
 	public $user_info;
+	public $gogs_user_info;
 
 	public function __construct($process_setup = true)
 	{
@@ -34,7 +35,8 @@ class AWS_CONTROLLER
 		//加入gogs路径地址
 		TPL::assign('gogs_url', G_GOGS_URL . '/');
 
-		if ($this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE))
+		//获取gogs用户信息
+		if (($this->user_info = $this->model('account')->get_user_info_by_uid($this->user_id, TRUE))&&($this->gogs_user_info = $this->model('account')->get_gogs_info_by_name($this->user_info['user_name'])))
 		{
 			$user_group = $this->model('account')->get_user_group($this->user_info['group_id'], $this->user_info['reputation_group']);
 
@@ -44,6 +46,7 @@ class AWS_CONTROLLER
 			}
 
 			$this->model('online')->online_active($this->user_id, $this->user_info['last_active']);
+
 		}
 		else if ($this->user_id)
 		{
@@ -74,6 +77,7 @@ class AWS_CONTROLLER
 		{
 			TPL::assign('user_id', $this->user_id);
 			TPL::assign('user_info', $this->user_info);
+			TPL::assign('gogs_user_info', $this->gogs_user_info);
 		}
 
 		if ($this->user_id and ! $this->user_info['permission']['human_valid'])

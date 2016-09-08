@@ -71,7 +71,7 @@ class setting extends AWS_CONTROLLER
 				$work_experience_list[$key]['job_name'] = $jobs_list[$val['job_id']];
 			}
 		}
-
+		
 		TPL::assign('work_experience_list', $work_experience_list);
 
 		TPL::import_js('js/fileupload.js');

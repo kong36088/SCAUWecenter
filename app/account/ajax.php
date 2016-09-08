@@ -1058,6 +1058,7 @@ class ajax extends AWS_CONTROLLER
 
 		$update_attrib_data['qq'] = htmlspecialchars($_POST['qq']);
 		$update_attrib_data['homepage'] = htmlspecialchars($_POST['homepage']);
+
 		$update_data['mobile'] = htmlspecialchars($_POST['mobile']);
 
 		if (($update_attrib_data['qq'] OR $update_attrib_data['homepage'] OR $update_data['mobile']) AND !$this->model('integral')->fetch_log($this->user_id, 'UPDATE_CONTACT'))
@@ -1077,6 +1078,23 @@ class ajax extends AWS_CONTROLLER
 				$this->model('topic')->save_topic($_POST['province']);
 			}
 		}
+
+
+
+		//验证GOGS个性名称
+		if(!empty($_POST['gogs_full_name'])){
+			if(strlen($_POST['gogs_full_name'])/3>15){
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('GIT名称太长:-(')));
+			}
+			if(!$this->model('account')->check_gogs_full_name_repeat(htmlspecialchars($_POST['gogs_full_name']),$this->user_info['user_name'])){
+				H::ajax_json_output(AWS_APP::RSM(null, '-1', AWS_APP::lang()->_t('GIT名称已被使用:-(')));
+			}
+		}
+		//gogs更新
+		$update_gogs_user_data['website'] = $update_attrib_data['homepage'];
+		$update_gogs_user_data['full_name'] = htmlspecialchars($_POST['gogs_full_name']);
+		$update_gogs_user_data['location'] = $update_data['province'] . $update_data['city'];
+		$this->model('account')->update_gogs_field($update_gogs_user_data,$this->user_info['user_name']);
 
 		// 更新主表
 		$this->model('account')->update_users_fields($update_data, $this->user_id);

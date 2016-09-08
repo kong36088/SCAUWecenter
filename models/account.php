@@ -472,6 +472,19 @@ class account_class extends AWS_MODEL
         return $result;
     }
 
+	/**
+	 * 根据gogs用户名返回gogs用户信息
+	 * @param $name string 用户名
+	 */
+	public function get_gogs_info_by_name($name){
+		$user_info = $this->fetch_row('gogs.user', "name = '" . $name . "'");
+		if(!empty($user_info)){
+			return $user_info;
+		}else{
+			return false;
+		}
+	}
+
     /**
      * 根据用户ID获取用户通知设置
      * @param $uid
@@ -636,13 +649,13 @@ class account_class extends AWS_MODEL
      */
     public function update_users_fields($update_data, $uid)
     {
-	    // TODO 更新gogs库email
+	    // TODO 更新gogs库对应信息
 	    if($update_data['email']){
 		    $user_info = $this->get_user_info_by_uid($uid);
 		    $this->update('gogs.user',array(
 			    'email' => $update_data['email'],
 			    'avatar_email' => $update_data['email']
-		    ),"name = '" . $user_info['user_name'] . "'");
+		    ),"name = '" . $this->quote($user_info['user_name']) . "'");
 	    }
 
         return $this->update('users', $update_data, 'uid = ' . intval($uid));
@@ -665,7 +678,7 @@ class account_class extends AWS_MODEL
 	    $this->update('gogs.user',array(
 		    'name' => htmlspecialchars($user_name),
 		    'lower_name' => strtolower(htmlspecialchars($user_name))
-	    ),"name = '" . $user_info['user_name'] . "'");
+	    ),"name = '" . $this->quote($user_info['user_name']) . "'");
 
         //return $this->model('search_fulltext')->push_index('user', $user_name, $uid);
 
@@ -1503,4 +1516,40 @@ class account_class extends AWS_MODEL
 
         return true;
     }
+
+	/**
+	 * 验证gogs库中full name是否重复
+	 * @param $name string 要更改的姓名
+	 * @param $user_name int 操作人帐号
+	 * @return boolean
+	 */
+	public function check_gogs_full_name_repeat($full_name,$user_name){
+		if($this->count('gogs.user', "name != '" . $user_name . "' AND full_name = '" . $this->quote($full_name) . "'") < 1){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	/**
+	 * 更新gogs库中full name
+	 * @param $name string 要更改的姓名
+	 * @param $user_name int 操作人帐号
+	 * @return int
+	 */
+	public function update_gogs_full_name($full_name,$user_name){
+		return $this->update('gogs.user',array(
+			'full_name' => $full_name,
+		),"name = '" . $this->quote($user_name) . "'");
+	}
+
+	/**
+	 * 修改gogs user表字段
+	 * @param $name array 要修改的数据
+	 * @param $user_name int 操作人帐号
+	 * @return int
+	 */
+	public function update_gogs_field($update_data,$user_name){
+		return $this->update('gogs.user',$update_data,"name = '" . $this->quote($user_name) . "'");
+	}
 }
