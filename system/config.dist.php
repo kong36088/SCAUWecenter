@@ -36,17 +36,10 @@ define('G_SESSION_SAVE', 'db');
 define('G_SESSION_SAVE_PATH', '');
 
 //GOGS域名
-<<<<<<< HEAD
-define('G_GOGS_URL' , 'http://git.jwlchina.cn/');
+define('G_GOGS_URL' , 'http://wecenter.jwlchina.cn/git');
 
 //CURL GOGS域名
-define('G_GOGS_CURL_URL', 'http://git.jwlchina.cn/');
-=======
-define('G_GOGS_URL' , 'http://wecenter.jwlchina.cn');
-
-//CURL GOGS域名
-define('G_GOGS_CURL_URL', 'http://wecenter.jwlchina.cn');
->>>>>>> ab17ee30a9a82857b0fe2f66dcd3e98ad5decd30
+define('G_GOGS_CURL_URL', 'http://wecenter.jwlchina.cn/git');
 
 //GOGS COOKIE路径
 define('G_GOGS_COOKIE_DIR', dirname(__FILE__) . '/../cache/cookie/');
@@ -55,8 +48,4 @@ define('G_GOGS_COOKIE_DIR', dirname(__FILE__) . '/../cache/cookie/');
 define('G_GOGS_DOMAIN','wecenter.jwlchina.cn');
 
 //GOGS cookie路径
-<<<<<<< HEAD
 define('G_GOGS_COOKIE_SUBURL','/git');
-=======
-define('G_GOGS_COOKIE_SUBURL','');
->>>>>>> ab17ee30a9a82857b0fe2f66dcd3e98ad5decd30
